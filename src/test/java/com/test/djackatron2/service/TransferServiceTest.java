@@ -14,8 +14,8 @@ import org.junit.runners.Parameterized.Parameters;
 
 import com.djackatron2.dao.AccountDao;
 import com.djackatron2.model.Account;
-import com.djackatron2.service.FeeService;
 import com.djackatron2.service.TransferService;
+import com.djackatron2.service.impl.VariableFeeService;
 
 @RunWith(value = Parameterized.class)
 public class TransferServiceTest {
@@ -51,7 +51,7 @@ public class TransferServiceTest {
 		when(accountDao.findAccountByNumber(accountFrom.getNumber())).thenReturn(accountFrom);
 		when(accountDao.findAccountByNumber(accountTo.getNumber())).thenReturn(accountTo);
 		
-		FeeService feeService = mock(FeeService.class);
+		VariableFeeService feeService = mock(VariableFeeService.class);
 		when(feeService.calculateFee(anyDouble())).thenReturn(fixedRate);
 		
 		TransferService transferService = new TransferService();
@@ -63,5 +63,4 @@ public class TransferServiceTest {
 		assertThat(accountTo.getBalance(), equalTo(toAccountBalance));
 		assertThat(accountFrom.getBalance(), equalTo(fromAccountBalance));
 	}
-
 }

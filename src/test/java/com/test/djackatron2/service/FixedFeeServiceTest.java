@@ -11,30 +11,32 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-import com.djackatron2.service.FeeService;
+import com.djackatron2.service.impl.FixedFeeService;
 
 @RunWith(value = Parameterized.class)
-public class FeeServiceTest {
+public class FixedFeeServiceTest {
 
-	private double fixedRate;
+	private double fixedFeeAmount;
 	private double transferAmount;
 	private double expected;
-	
-	public FeeServiceTest(double fixedRate, double transferAmount, double expceted){
-		this.fixedRate = fixedRate;
+
+	public FixedFeeServiceTest(double fixedFeeAmount, double transferAmount,
+			double expceted) {
+		this.fixedFeeAmount = fixedFeeAmount;
 		this.transferAmount = transferAmount;
 		this.expected = expceted;
 	}
-	
+
 	@Parameters
 	public static Collection<Object[]> data() {
-		Object[][] data = new Object[][] { { 5, 1, 5 }, { 5, 10, 5 }, { 5, 100, 5 } };
+		Object[][] data = new Object[][] { { 5, 1, 5 }, { 5, 10, 5 },
+				{ 5, 100, 5 } };
 		return Arrays.asList(data);
 	}
 
 	@Test
 	public void testShouldBeCalculateFeeByTransferAmount() {
-		FeeService feeService = new FeeService(this.fixedRate);
+		FixedFeeService feeService = new FixedFeeService(this.fixedFeeAmount);
 		double feeRate = feeService.calculateFee(this.transferAmount);
 		assertThat(feeRate, equalTo(expected));
 	}
