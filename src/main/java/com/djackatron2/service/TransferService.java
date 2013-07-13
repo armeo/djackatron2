@@ -1,17 +1,22 @@
 package com.djackatron2.service;
 
+import org.joda.time.LocalTime;
+
 import com.djackatron2.dao.AccountDao;
 import com.djackatron2.model.Account;
-import com.djackatron2.service.impl.VariableFeeService;
 
 public class TransferService {
 
 	private AccountDao accountDao;
 	private FeeService feeService;
+	private TimeService timeService;
 	private double minimumTransferAmount; 
 	
 	public void transfer(double transferAmount, String accountNumberFrom,
 			String accountNumberTo) {
+		if(timeService != null && !timeService.isAvailable(new LocalTime()))
+			throw new OutOfServiceException();
+		
 		if(transferAmount <= 0 || this.minimumTransferAmount > transferAmount)
 			throw new IllegalArgumentException();
 		
@@ -35,6 +40,10 @@ public class TransferService {
 
 	public void setMinimumAmount(double minimumTransferAmount) {
 		this.minimumTransferAmount = minimumTransferAmount;
+	}
+	
+	public void setTimeService(TimeService timeService) {
+		this.timeService = timeService;
 	}
 
 }
