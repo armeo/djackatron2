@@ -4,6 +4,8 @@ public class Account {
 	private String number;
 	private String name;
 	private double balance;
+
+	public Account(){}
 	
 	public Account(String number, String name, double balance){
 		this.number = number;
